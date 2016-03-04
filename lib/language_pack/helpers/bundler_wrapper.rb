@@ -95,6 +95,14 @@ class LanguagePack::Helpers::BundlerWrapper
       # Silently check for ruby version
       output  = run_stdout(command, user_env: true, env: env)
 
+      puts "========"
+      puts run_stdout("echo $RAILS_ENV", user_env: true)
+      puts run_stdout("echo $RAILS_ENV", user_env: true, env: env)
+
+      puts "=="
+      puts "'#{command}': #{output}"
+      puts "#{output}: #{output.chomp.sub('(', '').sub(')', '').sub(/(p\d+)/, ' \1').split.join('-')}"
+
       # If there's a gem in the Gemfile (i.e. syntax error) emit error
       raise GemfileParseError.new(run("bundle check", user_env: true, env: env)) unless $?.success?
       if output.match(/No ruby version specified/)
